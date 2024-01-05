@@ -1,0 +1,49 @@
+﻿@model ML.UnidadEntrega
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Form</h2>
+@using (Html.BeginForm("Form", "Unidad", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.IdUnidad)
+
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.NumeroPlaca, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.NumeroPlaca, new { @class = "coll-auto" })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Modelo, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.Modelo, new { @class = "coll-auto" })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Marca, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.Marca, new { @class = "col-auto" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Fabricacion, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.Fabricacion, new { @class = "coll-auto" })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Estatus.IdEstatusUnidad, new { @class = "hiddem" })
+            @Html.DropDownListFor(model => model.Estatus.IdEstatusUnidad, new SelectList(Model.Estatus.EstatusObject, "IdEstatus", "Estatus"), "Selecciona un estatus de su Unidad", new { @class = "form-controls" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1">
+            <input type="submit" class="btn btn-success btn-sm seach input-group" value="Guardar" />
+        </div>
+        <div class="col-md-1">
+            <a id="back" class="btn btn-danger" href="@Url.Action("GetAll", "Unidad")">Volver</a>
+        </div>
+    </div>
+}

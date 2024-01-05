@@ -1,0 +1,246 @@
+﻿@model ML.Paquete
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Enviar un paquete</h2>
+
+@using (Html.BeginForm("Form", "Paquete", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-6">
+            @Html.Label("Detalles del paquete: ")
+            @Html.TextBoxFor(model => model.Detalle, new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-6">
+            @Html.Label("Peso: ")
+            @Html.TextBoxFor(model => model.Peso, new { @class = "form-control", @placeholder = "0.0" })
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-md-6">
+            @Html.Label("Direccion de origen: ")
+            <div class="input-group md-6">
+                @Html.TextBoxFor(model => model.DireccionOrigen, new { @class = "form-control", @id = "txtDireccionOrigen", @readonly = true, @placeholder = "Direcccion de Origen" })
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="limpiarOrigen()">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            @Html.Label("Direccion de Entrega: ")
+            <div class="input-group md-6">
+                @Html.TextBoxFor(model => model.DireccionEntrega, new { @class = "form-control", @id = "txtDireccionEntrega", @readonly = true, @placeholder = "Direcccion de Entrega" })
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="limpiarDestino()">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+
+        <div class="col-md-6">
+            @Html.Label("Correo Electronico: ")
+            <div class="input-group mb-3">
+                @Html.TextBoxFor(model=>model.Email, new {@class="form-control", @placeholder ="ejemplo@gmail.com"})
+                <span class="input-group-text" id="basic-addon2">@@gmail.com</span>
+            </div>
+
+        </div>
+
+
+
+        <div class="col-md-3">
+            <input type="submit" class="btn btn-success btn-sm seach input-group" value="Guardar" />
+        </div>
+        <div class="col-md-3">
+            <a id="back" class="btn btn-danger" href="@Url.Action("Index", "Home")">Volver</a>
+        </div>
+
+
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div id="map" class="col-md-6">
+            @* Aqui esta el mapa *@
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+
+    </div>
+
+
+    <style>
+        #map {
+            height: 400px;
+            width: 200%;
+        }
+    </style>
+}
+
+
+
+
+<script type="text/javascript">
+
+    (g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })({
+        key: "AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw",
+        v: "weekly",
+    });
+
+
+    let position;
+    var geocoder;
+
+
+    // Initialize and add the map
+    const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let labelIndex = 0;
+
+
+    let map;
+    var markerOrigen;
+    var markerEntrega;
+
+
+    async function initMap() {
+        const { Map } = await google.maps.importLibrary("maps");
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: new google.maps.LatLng(-33.91722, 151.23064),
+            zoom: 16,
+        });
+
+        google.maps.event.addListener(map, "click", (event) => {
+
+            if (markerOrigen == undefined) {
+                input = $("#txtDireccionOrigen").val();
+                const svgMarker = {
+                    path: "M-1.547 12l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM0 0q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
+                    fillColor: "blue",
+                    fillOpacity: 0.6,
+                    strokeWeight: 0,
+                    rotation: 0,
+                    scale: 2,
+                    anchor: new google.maps.Point(0, 20),
+                };
+                markerOrigen = new google.maps.Marker({
+                    map: map,
+                    position: event.latLng,
+                    icon: svgMarker,
+                    title: 'Direccion de Origen'
+                });
+                var geocoderOrigen = new google.maps.Geocoder();
+                geocoderOrigen.geocode({
+                    'latLng': event.latLng
+                }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        $("#txtDireccionOrigen").val(results[0].formatted_address);
+                    } else {
+                        $("#txtDireccionOrigen").val("Localizacion no encontrada");
+                    }
+                });
+                marker = markerOrigen;
+
+            } else if (markerEntrega == undefined) {
+                input = $("#txtDireccionEntrega").val();
+                markerEntrega = new google.maps.Marker({
+                    map: map,
+                    position: event.latLng,
+                    title: 'Direccion de Entrega'
+                });
+                var geocoderEntrega = new google.maps.Geocoder();
+                geocoderEntrega.geocode({
+                    'latLng': event.latLng
+                }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        $("#txtDireccionEntrega").val(results[0].formatted_address);
+                    } else {
+                        $("#txtDireccionEntrega").val("Localizacion no encontrada");
+                    }
+                });
+
+                marker = markerEntrega;
+            } else {
+                return
+            }
+        });
+    }
+
+    function limpiarOrigen() {
+        document.getElementById("txtDireccionOrigen").value = "";
+        $("txtDireccionOrigen").show();
+        $("txtDireccionOrigen").hide();
+        if (markerOrigen) {
+            markerOrigen.setMap(null);
+            markerOrigen = undefined;
+        }
+        return false;
+    }
+
+    function limpiarDestino() {
+        document.getElementById("txtDireccionEntrega").value = "";
+        $("txtDireccionEntrega").show();
+        $("txtDireccionEntrega").hide();
+        if (markerEntrega) {
+            markerEntrega.setMap(null);
+            markerEntrega = undefined;
+        }
+        return false;
+    }
+
+
+
+    //async function initMap(position) {
+
+    //    const { Map } = await google.maps.importLibrary("maps");
+    //    const { AdvancedMarkerView } = await google.maps.importLibrary("marker");
+
+    //    // The map, centered at Uluru
+    //    map = new Map(document.getElementById("map"), {
+    //        zoom: 10,
+    //        center: position,
+    //        mapId: "DEMO_MAP_ID",
+    //    });
+
+    //    //the marker, positioned at Uluru
+    //    const marker = new google.maps.Marker({
+    //        map: map,
+    //        position: position,
+    //        title: 'Direccion de entrega'
+    //    });
+
+    //    google.maps.event.addListener(map, 'click', function (event) {
+    //        const latLng = event.latLng;
+    //        marker.setPosition(latLng);
+
+    //        var geocoder = new google.maps.Geocoder();
+    //        geocoder.geocode({
+    //            'latLng': event.latLng
+    //        }, function (results, status) {
+    //            if (status == google.maps.GeocoderStatus.OK) {
+    //                $("#txtDireccionEntrega").val(results[0].formatted_address);
+    //            } else {
+    //                $("#txtDireccionEntrega").val("Localizacion no encontrada");
+    //            }
+    //        });
+    //    });
+    //}
+
+
+    initMap();
+
+</script>

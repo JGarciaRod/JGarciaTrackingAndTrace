@@ -1,0 +1,61 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Form</h2>
+
+@using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.IdUsuario)
+
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.UserName, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.UserName, new { @class = "coll-auto" })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Password, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.Contra, new { @class = "coll-auto" ,@Type ="password"  })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Email, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.Email, new { @class = "coll-auto" })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Rol.IdRol, new { @class = "hidden" })
+            @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Roles, "IdRol", "Tipo"), "Selecciona un rol correspondiente", new { @class = "form-controls" })
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Nombre, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.Nombre, new { @class = "coll-aito" })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ApellidoPaterno, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "coll-auto" })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ApellidoMaterno, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "coll-auto" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1">
+            <input type="submit" class="btn btn-success btn-sm seach input-group" value="Guardar" />
+        </div>
+        <div class="col-md-1">
+            <a id="back" class="btn btn-danger" href="@Url.Action("GetAll", "Usuario")">Volver</a>
+        </div>
+    </div>
+}

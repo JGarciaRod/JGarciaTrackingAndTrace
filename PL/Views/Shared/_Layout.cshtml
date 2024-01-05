@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container">
+            @Html.ActionLink("Nombre de la aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar navegación" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                @{
+                    string rol = Session["Rol"] as string;
+                }
+
+
+                <ul class="navbar-nav flex-grow-1">
+
+
+                    @if (rol == "Administrador")
+                    {
+
+                        <li>@Html.ActionLink("Usuario", "GetAll", "Usuario", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Unidad", "GetAll", "Unidad", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Repartidor", "GetAll", "Repartidor", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Paquete", "Form", "Paquete", new { area = "" }, new { @class = "nav-link" })</li>
+
+
+                        <li class="position-absolute top-0 end-0">@Html.ActionLink("Login", "Login", "Usuario", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+                    @if (rol == "Usuario")
+                    {
+                        //Enviar
+                        <li>@Html.ActionLink("Paquete", "Form", "Paquete", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li class="position-absolute top-0 end-0">@Html.ActionLink("Login", "Login", "Usuario", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+                    @if (rol == "Repartidor")
+                    {
+                        <li>@Html.ActionLink("Mi Unidad", "GetAll", "Unidad", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Paquetes a entregar", "GetAll", "Paquetes", new { area = "" }, new { @class = "nav-link" })</li>
+
+                        <li class="position-absolute top-0 end-0">@Html.ActionLink("Login", "Login", "Usuario", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+
+
+                    @if (rol == "Invitado")
+                    {
+                        @*<li>@Html.ActionLink("Usuario", "GetAll", "Usuario", new { area = "" }, new { @class = "nav-link" })</li>*@
+                        <li class="position-absolute top-0 end-0">@Html.ActionLink("Login", "Login", "Usuario", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+                </ul>
+
+                @using (Html.BeginForm("GetRastreo", "Rastreo", FormMethod.Get, new { enctype = "multipart/form-data" }))
+                {
+                    <form class="d-flex" role="search">
+                        <input name="codigo" type="search" placeholder="Search" aria-label="Search" class="col-lg-auto">
+                        <input type="submit" class="btn btn-success btn-sm seach input-group" value="Buscar" />
+                    </form>
+                }
+
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

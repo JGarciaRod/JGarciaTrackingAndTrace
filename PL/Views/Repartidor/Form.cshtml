@@ -1,0 +1,104 @@
+﻿@model ML.Repartidor
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Form</h2>
+@using (Html.BeginForm("Form", "Repartidor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.IdRepartidor);
+
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Nombre, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.Nombre, new { @class = "coll-auto" })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ApellidoPaterno, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "coll-auto" })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ApellidoMaterno, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "coll-auto" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.UnidadEntrega, new { @class = "hidden" })
+            @Html.DropDownListFor(model => model.UnidadEntrega.IdUnidad, new SelectList(Model.UnidadEntrega.Unidades, "IdUnidad", "NumeroPlaca"), "Selecciona una unidad", new { @class = "form-controls" })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Telefono, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.Telefono, new { @class = "coll-auto" })
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.FechaIngreso, new { @class = "hidden" })
+            @Html.TextBoxFor(model => model.FechaIngreso, new { @class = "coll-auto", @placeholder = "MM/DD/AAAA", @Type = "Date" })
+        </div>
+
+        <div class="col-md-3">
+            <label>Imagen</label>
+
+            @if (Model.Fotografia == "" || Model.Fotografia == null)
+            {
+                <img id="img" src="https://www.computerhope.com/jargon/g/guest-user.png"
+                     width="150" height="120" />
+
+
+                <input id="Imagen" name="Imagen" type="file" class="form-control" onchange="ValidarImagen(), visualizarImagen(this)" />
+            }
+            else
+            {
+                <img id="img" src="data:image/*;base64,@Model.Fotografia" width="150" height="120" />
+
+                <input id="Imagen" name="Imagen" type="file" class="form-control" onchange="ValidarImagen(), visualizarImagen(this)" />
+            }
+        </div>
+
+        <div class="row">
+            <div class="col-md-1">
+                <input type="submit" class="btn btn-success btn-sm seach input-group" value="Guardar" />
+            </div>
+            <div class="col-md-1">
+                <a id="back" class="btn btn-danger" href="@Url.Action("GetAll", "Repartidor")">Volver</a>
+            </div>
+        </div>
+
+    </div>
+}
+@Scripts.Render("~/bundles/jquery")
+
+<script type="text/javascript">
+    function ValidarImagen() {
+        var extencionesPermitidas = ['jpeg', 'png', 'jpg'];
+        var extencionArchivo = document.getElementById('Imagen').value.split('.').pop().toLowerCase();
+        var isValidFile = false; //saber si es valido o no
+        for (var index in extencionesPermitidas) {
+            if (extencionArchivo === extencionesPermitidas[index]) {
+                isValidFile = true;
+                break;
+            }
+        }
+        if (!isValidFile) {
+            alert('Las extenciones permitidas son: *.' + extencionesPermitidas.join(',*.'));
+            $("#Imagen").val("")
+        }
+        return isValidFile;
+    }
+
+    function visualizarImagen(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#img").attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

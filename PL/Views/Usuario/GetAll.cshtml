@@ -1,0 +1,58 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetAll</h2>
+<a class="btn btn-success" href=@Url.Action("Form","Usuario" , new {IdUsuario = 0})>Agregar nuevo usuario</a>
+
+@if (Model.Usuarios != null)
+{
+<div class="row">
+        <div class="col-md-12">
+            
+
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>Editar</th>
+                        <th>Nombre e Usuario</th>
+                        <th>Apellido Paterno</th>
+                        <th>Rol</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody class="table-primary">
+                    @foreach (ML.Usuario usuario in Model.Usuarios)
+                {
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("Form","Usuario",new {IdUsuario = usuario.IdUsuario})">
+                                    <i class="fa-solid fa-user-pen"></i>
+                                </a>
+                            </td>
+                            <td>@usuario.UserName</td>
+                            <td>@usuario.ApellidoPaterno</td>
+                            <td>@usuario.Rol.Tipo</td>
+                            <td>
+                                <a href="@Url.Action("Delete","Usuario",new {IdUsuario = usuario.IdUsuario})">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="row align-items-start">
+        <div class="col">
+            NO HAY USUARIOS 
+        </div>
+    </div>
+        }

@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html>
+<head>
+    <link href="~/Content/Styles/Login.css" rel="stylesheet" />
+</head>
+<body class="text-center">
+    @using (Html.BeginForm("Login", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="login">
+            <div class="login-triangle"></div>
+
+            <h2 class="login-header">Inicio de sesión</h2>
+
+            <form class="login-container">
+                <p>Ingrese Email <input type="email" name='email' placeholder="Ingrese su Correo"></p>
+                <p>Ingrese Contraseña <input type="password" name='pass' placeholder="Ingrese contraseña"></p>
+                <p><input type="submit" value="Ingresar"></p>
+            </form>
+        </div>
+    }
+    </body>
+</html>
+

@@ -1,0 +1,97 @@
+﻿@model ML.Entrega
+@{
+    ViewBag.Title = "Rastreo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Busca el detalle de tu envio</h2>
+<hr />
+@if (Model != null)
+{
+    <div class="input-group mb-12">
+        <br />
+        <span class="input-group-text">#</span>
+        @Html.TextBoxFor(model => model.Paqute.CodigoRastreo, new { @class = "form-control" })
+    </div>
+    <hr />
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>Destino origen</th>
+                <th>Destino Entrega</th>
+                <th>Repartidor</th>
+                <th>Fecha de Entrega</th>
+                <th>Estatus de Entrega</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Paqute.DireccionOrigen</td>
+                <td>@Model.Paqute.DireccionEntrega</td>
+                <td>
+                    @Model.Repartidor.Nombre
+                    @Model.Repartidor.ApellidoPaterno
+                </td>
+                <td>@Model.FechaEntrega.ToString("dd/MM/yyyy")</td>
+                <td>@Model.Estatus.Estatus</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="map">
+    </div>
+
+
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        A simple danger alert—check it out!
+    </div>
+
+}
+
+<script type="text/javascript">
+
+
+    (g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })({
+        key: "AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw",
+        v: "weekly",
+    });
+
+    let map;
+
+    position = { lat: 19.394208, lng: -99.028858 };
+
+    async function initMap(position) {
+        // The location of Uluru
+        //const position = { lat: -25.344, lng: 131.031 };
+        // Request needed libraries.
+
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerView } = await google.maps.importLibrary("marker");
+
+        // The map, centered at Uluru
+        map = new Map(document.getElementById("map"), {
+            zoom: 16,
+            center: position,
+            mapId: "DEMO_MAP_ID",
+        });
+
+        // The marker, positioned at Uluru
+        const marker = new google.maps.Marker({
+            map: map,
+            position: position,
+            title: "Uluru",
+        });
+    }
+
+    initMap(position);
+
+</script>

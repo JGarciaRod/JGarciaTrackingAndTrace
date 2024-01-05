@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="93ab0c2cd04641e1ac252965887d721d" Name="Diagram1" ZoomLevel="47">
+        <EntityTypeShape EntityType="JGarciaTrakingAndTraceModel.Entrega" Width="1.5" PointX="7.5" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="JGarciaTrakingAndTraceModel.EstatusEntrega" Width="1.5" PointX="5.25" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JGarciaTrakingAndTraceModel.EstatusUnidad" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="JGarciaTrakingAndTraceModel.Paquete" Width="1.5" PointX="5.25" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="JGarciaTrakingAndTraceModel.Repartidor" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="JGarciaTrakingAndTraceModel.Rol" Width="1.5" PointX="7.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="JGarciaTrakingAndTraceModel.Usuario" Width="1.5" PointX="10" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="JGarciaTrakingAndTraceModel.FK__Entrega__IdEstat__22AA2996" ManuallyRouted="false" />
+        <AssociationConnector Association="JGarciaTrakingAndTraceModel.FK__Entrega__IdPaque__20C1E124" ManuallyRouted="false" />
+        <AssociationConnector Association="JGarciaTrakingAndTraceModel.FK__Entrega__IdRepar__21B6055D" ManuallyRouted="false" />
+        <AssociationConnector Association="JGarciaTrakingAndTraceModel.FK__Usuario__IdRol__1273C1CD" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="JGarciaTrakingAndTraceModel.UnidadEntrega" Width="1.5" PointX="3" PointY="1.125" />
+        <AssociationConnector Association="JGarciaTrakingAndTraceModel.FK__UnidadEnt__IdEst__173876EA" />
+        <AssociationConnector Association="JGarciaTrakingAndTraceModel.FK__Repartido__IdUni__1A14E395" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

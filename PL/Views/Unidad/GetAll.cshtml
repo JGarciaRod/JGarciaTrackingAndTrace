@@ -1,0 +1,61 @@
+﻿@model ML.UnidadEntrega
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetAll</h2>
+<a class="btn btn-success" href=@Url.Action("Form","Unidad" , new {IdUnidad = 0})>Agregar nueva Unidad</a>
+
+@if (Model.Unidades != null)
+{
+
+
+<div class="row">
+        <div class="col-md-12">
+
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>Editar</th>
+                        <th>Numero de placa</th>
+                        <th>Nombre modelo</th>
+                        <th>Nombre marca</th>
+                        <th>Nombre Status</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody class="table-primary">
+                    @foreach (ML.UnidadEntrega unidad in Model.Unidades)
+                {
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("Form","Unidad",new {IdUnidad = unidad.IdUnidad})">
+                                    <i class="fa-solid fa-user-pen"></i>
+                                </a>
+                            </td>
+                            <td>@unidad.NumeroPlaca</td>
+                            <td>@unidad.Modelo</td>
+                            <td>@unidad.Marca</td>
+                            <td>@unidad.Estatus.Estatus</td>
+                            <td>
+                                <a href="@Url.Action("Delete","Unidad",new {IdUnidad = unidad.IdUnidad})">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="row align-items-start">
+        <div class="col">
+            NO HAY USUARIOS
+        </div>
+    </div>
+}
